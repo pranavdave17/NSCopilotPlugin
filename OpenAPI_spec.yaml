@@ -316,10 +316,10 @@ paths:
               properties:
                 fromTime:
                   type: integer
-                user:
+                users:
                   items:
                     type: string
-                  type: integer
+                  type: list
                 capPerUser:
                   type: integer
       responses:
