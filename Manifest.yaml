@@ -1,0 +1,32 @@
+Descriptor:
+  Name: Netskope Reporting for Threat and Data Protection
+  DisplayName: Netskope Reporting API endpoints
+  Description: The API plugin offers 3 skills that range from displaying Netskope Alerts , incidents and UCI score for Threat Hunting and Data Protection.
+  SupportedAuthTypes:
+    - ApiKey
+  Authorization:
+    Type: APIKey
+    Key: Netskope-api-token
+    Location: Header
+    AuthScheme: ''
+  Icon: https://go.netskope.com/rs/665-KFP-612/images/Netskope-Primary-Logo-Full-Color-RGB.svg
+
+SkillGroups:
+    - Format: API
+      Settings:
+        OpenApiSpecUrl: https://raw.githubusercontent.com/TapanBhavsarCrest/NSCopilotPlugin/refs/heads/main/OpenAPI_spec.yaml
+        EndpointUrl: https://crest-support.de.goskope.com
+      Skills:
+        - Name: Any format to Unix timestamp format agent
+          DisplayName: Any format to Unix timestamp format agent
+          Description: convert anytype of date time format or relative time range format to unix timestamp format.
+          Inputs:
+            - Name: Request
+              Description: Describe what information you want this agent to look up
+              Required: true
+          Settings:
+            Instructions: |
+              You are an AI agent that can help with converting anytype of datetime format to unix timestamp format.
+              Convert related time range to unix timestamp.
+              for example,
+                last 7 day: for that you need to check first current datetime as endtime and go back to last 7 days datetime as starttime.
