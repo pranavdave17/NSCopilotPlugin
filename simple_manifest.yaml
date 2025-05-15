@@ -1,0 +1,17 @@
+Descriptor:
+  Name: Netskope Reporting for Threat and Data Protection clean
+  DisplayName: Netskope API endpoints
+  Description: The API plugin offers 3 skills that range from displaying Netskope Alerts , incidents and UCI score for Threat Hunting and Data Protection.
+  SupportedAuthTypes:
+    - ApiKey
+  Authorization:
+    Type: APIKey
+    Key: Netskope-api-token
+    Location: Header
+    AuthScheme: ''
+  Icon: https://go.netskope.com/rs/665-KFP-612/images/Netskope-Primary-Logo-Full-Color-RGB.svg
+SkillGroups:
+    - Format: API
+      Settings:
+        OpenApiSpecUrl: https://raw.githubusercontent.com/TapanBhavsarCrest/NSCopilotPlugin/refs/heads/main/OpenAPI_spec.yaml
+        EndpointUrl: https://crest-support.de.goskope.com
