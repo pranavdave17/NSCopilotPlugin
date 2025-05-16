@@ -1,0 +1,4 @@
+name: GetCurrentTime
+description: Retrieves the current UTC time.
+query: |
+  print CurrentUTC = now()
