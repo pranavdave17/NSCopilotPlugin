@@ -1,0 +1,26 @@
+openapi: 3.0.3
+info:
+  title: AISENSE Timestamp API
+  description: Returns the current Unix timestamp.
+  version: 1.0.0
+servers:
+  - url: https://aisenseapi.com
+paths:
+  /services/v1/timestamp:
+    get:
+      summary: Get current Unix timestamp
+      description: Returns the current Unix timestamp in seconds since January 1, 1970 (UTC).
+      responses:
+        '200':
+          description: Successful response with current Unix timestamp.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: integer
+                    format: int64
+                    description: Unix timestamp in seconds.
+                required:
+                  - timestamp
