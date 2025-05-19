@@ -315,7 +315,7 @@ paths:
         You can consider these if not provided.
 
         EXAMPLE:
-        {"user": "aditya.khetan@crestdatasys.com", "fromTime": 0, "capPerUser": 1}
+        {"users": ["aditya.khetan@crestdatasys.com"], "fromTime": 0, "capPerUser": 1}
       requestBody:
         content:
           application/json:
