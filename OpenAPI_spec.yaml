@@ -309,6 +309,11 @@ paths:
         {"user": "<user name/id/email>", "fromTime": <from time in epoch>, "capPerUser": <cap per user>}
         from above structure the playload must contains user and capPerUser.
 
+        default value for,
+          fromTime is 0
+          capPerUser is 1
+        You can consider these if not provided.
+
         EXAMPLE:
         {"user": "aditya.khetan@crestdatasys.com", "fromTime": 0, "capPerUser": 1}
       requestBody:
