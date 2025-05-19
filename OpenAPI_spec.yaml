@@ -301,12 +301,12 @@ paths:
         - events
   /api/v2/incidents/uba/getuci:
     post:
-      summary: Get a confidence index(UCI score) for a user.
+      summary: Get a confidence index or UCI score for a user.
       description: |
-        Get confidence index(UCI score) for a user.
+        Get confidence index or UCI score for a user.
 
-        for that you need make json request as follows:
-        {"user": "<user name/id/email>", "fromTime": 0, "capPerUser": 1}
+        for that, we need to make json payload as follows:
+        {"user": "<user name/id/email>", "fromTime": <from time in epoch>, "capPerUser": <cap per user>}
         from above structure the playload must contains user and capPerUser.
 
         EXAMPLE:
