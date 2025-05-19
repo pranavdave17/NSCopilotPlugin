@@ -301,8 +301,11 @@ paths:
         - events
   /api/v2/incidents/uba/getuci:
     post:
-      summary: Get a list of users confidence index
-      description: Get a list of users confidence index
+      summary: Get a confidence index(UCI score) for a user.
+      description: |
+        Get confidence index(UCI score) for a user.
+        for that you need make json request as follows:
+        {"user": "<user name/id/email>", "fromTime": 0, "capPerUser": 1}
       requestBody:
         content:
           application/json:
