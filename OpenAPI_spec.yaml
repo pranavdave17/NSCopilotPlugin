@@ -304,8 +304,13 @@ paths:
       summary: Get a confidence index(UCI score) for a user.
       description: |
         Get confidence index(UCI score) for a user.
+
         for that you need make json request as follows:
         {"user": "<user name/id/email>", "fromTime": 0, "capPerUser": 1}
+        from above structure the playload must contains user and capPerUser.
+
+        EXAMPLE:
+        {"user": "aditya.khetan@crestdatasys.com", "fromTime": 0, "capPerUser": 1}
       requestBody:
         content:
           application/json:
