@@ -306,7 +306,7 @@ paths:
         Get confidence index or UCI score for a user.
 
         for that, we need to make json payload as follows:
-        {"user": "<user name/id/email>", "fromTime": <from time in epoch>, "capPerUser": <cap per user>}
+        {"users": ["<user name/id/email>"], "fromTime": <from time in epoch>, "capPerUser": <cap per user>}
         from above structure the playload must contains user and capPerUser.
 
         default value for,
