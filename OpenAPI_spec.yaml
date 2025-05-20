@@ -309,6 +309,9 @@ paths:
           fromTime is 0
           capPerUser is 1
         You can consider these if not provided.
+        
+        #PromptExample: get confidence index for xyz@gmail.com
+        #PromptExample: fetch UCI score for user.name
 
       requestBody:
         content:
