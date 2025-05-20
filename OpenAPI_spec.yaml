@@ -303,11 +303,11 @@ paths:
     post:
       summary: Get a confidence index or UCI score for a user.
       description: |
-        Get confidence index or UCI score for a user.
+        This endpoint is used to get confidence index or UCI score for a user or multiple users.
 
-        for that, we need to make json payload as follows:
+        TO make json payload as follows:
         {"users": ["<user name/id/email>"], "fromTime": <from time in epoch>, "capPerUser": <cap per user>}
-        from above structure the playload must contains user and capPerUser.
+        from above structure the playload must contains  **users** and **capPerUser**.
 
         default value for,
           fromTime is 0
@@ -315,7 +315,7 @@ paths:
         You can consider these if not provided.
 
         EXAMPLE:
-        {"users": ["aditya.khetan@crestdatasys.com"], "fromTime": 0, "capPerUser": 1}
+        {"users": ["abc.def@XYZ.com"], "fromTime": 0, "capPerUser": 1}
       requestBody:
         content:
           application/json:
