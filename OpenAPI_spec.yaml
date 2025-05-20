@@ -301,15 +301,9 @@ paths:
         - events
   /api/v2/incidents/uba/getuci:
     post:
-      summary: Get a confidence index or UCI score for a user.
+      summary: Get confidence index or UCI score for a user or multiple users
       description: |
-        This endpoint is used to get confidence index or UCI score for a user or multiple users.
-
-        default value for,
-          fromTime is 0
-          capPerUser is 1
-        You can consider these if not provided.
-        
+        get confidence index or UCI score for a user or multiple users.       
         #PromptExample: get confidence index for xyz@gmail.com
         #PromptExample: fetch UCI score for user.name
 
