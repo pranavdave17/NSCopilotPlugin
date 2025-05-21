@@ -306,7 +306,8 @@ paths:
         get confidence index or UCI score for a user or multiple users.       
         #PromptExample: get confidence index for xyz@gmail.com
         #PromptExample: fetch UCI score for user.name
-
+        #PromptExample: What is the UCI score for abc.efg@domain.com?
+        #PromptExample: WHat is the <user>'s confidence index? 
       requestBody:
         content:
           application/json:
