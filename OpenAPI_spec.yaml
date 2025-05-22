@@ -473,12 +473,12 @@ paths:
           name: query
           schema:
             type: string
-        - description: 'Start time, in Unix timestamp, of the desired alerts'
+        - description: 'Unix timestamp of start time period of alerts'
           in: query
           name: starttime
           schema:
             type: integer
-        - description: 'End time, in Unix timestamp, of the desired alerts'
+        - description: 'Unix timestamp of end time period of alerts'
           in: query
           name: endtime
           schema:
