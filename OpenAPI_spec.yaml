@@ -308,23 +308,11 @@ paths:
   /api/v2/events/datasearch/application:
     get:
       description: >2-
-         Get application events with the ability to filter the output based on attribute parameters. <br><br> This endpoint is intended to be used for ad-hoc query and allows users to get the application events in the system by providing various parameters in the request. Users can use this endpoint to filter and retrieve all and/or specific application events based on criteria like app, appcategory, time range and other relevant metadata. <br><br>
-        For example, to filter alerts to only show total count of applications
-        for a specific duration:
-        `?starttime=1731535136&endtime=1736805536&fields=count_total:count(id)`
-        <br> You can also filter on multiple attributes by adding an `and`
-        logical operator and another attribute in the same format as the
-        previous example. For example, to show total alert count for app
-        equals Facebook: `?query=appcategory eq 'Cloud Storage' and app eq
-        'Microsoft Office'`<br><br>
-
-        Additional examples can be found here:
-        <https://docs.netskope.com/en/skope-it-query-language-search-examples/>
-        <br><br>
-
-        For SIEM ingestion, please consider using the `api/v2/dataexport`
-        endpoints which are explained here:
-        <https://docs.netskope.com/en/using-the-rest-api-v2-dataexport-iterator-endpoints/>
+        Get application events with the ability to filter the output based on attribute parameters.
+        This endpoint is intended to be used for ad-hoc query and allows users to get the application events in the system by providing various parameters in the request.
+        Users can use this endpoint to filter and retrieve all and/or specific application events based on criteria like app, appcategory, time range and other relevant metadata.
+        #ExamplePrompts show netskope application alerts for app equals Facebook from last 7 days.
+        #ExamplePrompts show netskope application alerts for this month.
       parameters:
         - description: 'Query timeout, in seconds'
           in: query
@@ -445,30 +433,14 @@ paths:
     get:
       description: >-
         Get page events with the ability to filter the output based on
-        attribute parameters. <br><br> This endpoint is intended to be used
+        attribute parameters. This endpoint is intended to be used
         for ad-hoc query and allows users to get the page events in the system
         by providing various parameters in the request. Users can use this
         endpoint to filter and retrieve all and/or specific page events based
         on criteria like hostname, device_id, time range and other relevant
-        metadata. <br><br>
-
-        For example, to filter page events to only show total count of events
-        for a specific duration:
-        `?starttime=1731535136&endtime=1736805536&fields=event_count:count(id)`
-        <br> You can also filter on multiple attributes by adding an `and`
-        logical operator and another attribute in the same format as the
-        previous example. For example, to show total page event count for
-        device equals Windows Device:
-        `?starttime=1731535136&endtime=1736805536&fields=event_count:count(id)&query=device
-        eq 'Windows Device'`<br><br>
-
-        Additional examples can be found here:
-        <https://docs.netskope.com/en/skope-it-query-language-search-examples/>
-        <br><br>
-
-        For SIEM ingestion, please consider using the `api/v2/dataexport`
-        endpoints which are explained here:
-        <https://docs.netskope.com/en/using-the-rest-api-v2-dataexport-iterator-endpoints/>
+        metadata.
+        #ExamplePrompts Show all page events for device equals Windows Device from last 7 days
+        #ExamplePrompts get page events from 2025-05-21 to 2025-05-23
       parameters:
         - description: 'Query timeout, in seconds'
           in: query
@@ -596,30 +568,15 @@ paths:
     get:
       description: >-
         Get network events with the ability to filter the output based on
-        attribute parameters. <br><br> This endpoint is intended to be used
+        attribute parameters. This endpoint is intended to be used
         for ad-hoc query and allows users to get the network events in the
         system by providing various parameters in the request. Users can use
         this endpoint to filter and retrieve all and/or specific network
         events based on criteria like hostname, device_id, time range and
-        other relevant metadata. <br><br>
+        other relevant metadata.
 
-        For example, to filter network events to only show total count of
-        events for a specific duration:
-        `?starttime=1731535136&endtime=1736805536&fields=event_count:count(id)`
-        <br> You can also filter on multiple attributes by adding an `and`
-        logical operator and another attribute in the same format as the
-        previous example. For example, to show total network event count for
-        app equals DNS:
-        `?starttime=1731535136&endtime=1736805536&fields=event_count:count(id)&query=app
-        eq 'DNS'`<br><br>
-
-        Additional examples can be found here:
-        <https://docs.netskope.com/en/skope-it-query-language-search-examples/>
-        <br><br>
-
-        For SIEM ingestion, please consider using the `api/v2/dataexport`
-        endpoints which are explained here:
-        <https://docs.netskope.com/en/using-the-rest-api-v2-dataexport-iterator-endpoints/>
+        #ExamplePrompts show total network events for app equals DNS from last 3 days
+        #ExamplePrompts Show network events from 2025/05/21 to 2025/05/23
       parameters:
         - description: 'Query timeout, in seconds'
           in: query
