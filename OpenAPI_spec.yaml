@@ -304,15 +304,447 @@ paths:
                 $ref: '#/components/schemas/400'
       tags:
         - events
+
+  /api/v2/events/datasearch/application:
+    get:
+      description: >2-
+         Get application events with the ability to filter the output based on attribute parameters. <br><br> This endpoint is intended to be used for ad-hoc query and allows users to get the application events in the system by providing various parameters in the request. Users can use this endpoint to filter and retrieve all and/or specific application events based on criteria like app, appcategory, time range and other relevant metadata. <br><br>
+        For example, to filter alerts to only show total count of applications
+        for a specific duration:
+        `?starttime=1731535136&endtime=1736805536&fields=count_total:count(id)`
+        <br> You can also filter on multiple attributes by adding an `and`
+        logical operator and another attribute in the same format as the
+        previous example. For example, to show total alert count for app
+        equals Facebook: `?query=appcategory eq 'Cloud Storage' and app eq
+        'Microsoft Office'`<br><br>
+
+        Additional examples can be found here:
+        <https://docs.netskope.com/en/skope-it-query-language-search-examples/>
+        <br><br>
+
+        For SIEM ingestion, please consider using the `api/v2/dataexport`
+        endpoints which are explained here:
+        <https://docs.netskope.com/en/using-the-rest-api-v2-dataexport-iterator-endpoints/>
+      parameters:
+        - description: 'Query timeout, in seconds'
+          in: query
+          name: timeout
+          required: true
+          schema:
+            default: 180
+            type: integer
+        - description: |
+            This parameter allows for the use of a sophisticated query language to filter alerts based on various application-specific fields. Each query consists of terms, operators, and can include grouping and Boolean logic:
+
+            - **Field**: Specifies an application field such as `user` or `app`.
+            - **Operator**: Can be `eq` (equal to), `neq` (not equal to), `like` (pattern matching for strings), `gt` (greater than), `gte` (greater than or equal to), `lt` (less than), or `lte` (less than or equal to).
+            - **Value**: The value to match against the field, which can be a string or a numeric value. The *Value* **must be always enclosed in single quotes**, example '5.0', 'abcd', 'new'.
+            - **Format** : (<Field><space><Operator><space>'<Value>')
+
+            Queries can also be constructed with ranges like `timestamp from 1607990400 to 1610158997` (in Epoch Time). Boolean operators (`and`, `or`, `not`) can be used to combine multiple conditions. Parentheses can be used to specify the order of operations and group conditions.
+
+            Consider the below mentioned queryable fields which can be used to filter response:
+            - `user` : To filter based on User ID or email
+            - `app`: To filter based on name of the application
+          examples:
+            example1:
+              value: "query=user like 'sample.user@example.com'"
+            example2:
+              value: "query=user like 'sample.user2@example.com'"
+            example3:
+              value: "query=app like 'google.com' and user like 'sample.user@example.com'"
+          in: query
+          name: query
+          schema:
+            type: string
+        - description: 'Start time, in Unix timestamp, of the desired alerts'
+          in: query
+          name: starttime
+          schema:
+            type: integer
+        - description: 'End time, in Unix timestamp, of the desired alerts'
+          in: query
+          name: endtime
+          schema:
+            type: integer
+        - description: Query offset
+          in: query
+          name: offset
+          schema:
+            type: integer
+        - description: Number of results to limit the output by
+          in: query
+          name: limit
+          schema:
+            default: 10000
+            type: integer
+        - description: Number of results to limit the sub-aggregations by
+          in: query
+          name: sublimit
+          schema:
+            type: integer
+        - description: Fields to aggregate on
+          in: query
+          name: groupbys
+          schema:
+            items:
+              type: string
+            type: array
+        - description: Secondary fields to aggregate on
+          in: query
+          name: subgroupbys
+          schema:
+            items:
+              type: string
+            type: array
+        - description: Fields to sort the results by
+          in: query
+          name: orderbys
+          schema:
+            items:
+              type: string
+            type: array
+        - description: Names of the columns whose values want to be retrieved in results.
+          in: query
+          name: fields
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppEventResponse'
+          description: Successful Operation
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
+      summary: Get app events.
+      x-netskope-route-params:
+        enabledInProduction: true
+        rbac:
+          apiGroup:
+            - skope_it_application_events
+          access: r
+      tags:
+        - events
+    x-netskope-params:
+      serviceConfig: queryservice
+      version: 2
+
+  /api/v2/events/datasearch/page:
+    get:
+      description: >-
+        Get page events with the ability to filter the output based on
+        attribute parameters. <br><br> This endpoint is intended to be used
+        for ad-hoc query and allows users to get the page events in the system
+        by providing various parameters in the request. Users can use this
+        endpoint to filter and retrieve all and/or specific page events based
+        on criteria like hostname, device_id, time range and other relevant
+        metadata. <br><br>
+
+        For example, to filter page events to only show total count of events
+        for a specific duration:
+        `?starttime=1731535136&endtime=1736805536&fields=event_count:count(id)`
+        <br> You can also filter on multiple attributes by adding an `and`
+        logical operator and another attribute in the same format as the
+        previous example. For example, to show total page event count for
+        device equals Windows Device:
+        `?starttime=1731535136&endtime=1736805536&fields=event_count:count(id)&query=device
+        eq 'Windows Device'`<br><br>
+
+        Additional examples can be found here:
+        <https://docs.netskope.com/en/skope-it-query-language-search-examples/>
+        <br><br>
+
+        For SIEM ingestion, please consider using the `api/v2/dataexport`
+        endpoints which are explained here:
+        <https://docs.netskope.com/en/using-the-rest-api-v2-dataexport-iterator-endpoints/>
+      parameters:
+        - description: 'Query timeout, in seconds'
+          in: query
+          name: timeout
+          required: true
+          schema:
+            default: 180
+            type: integer
+        - description: |
+            This parameter allows for the use of a sophisticated query language to filter alerts based on various application-specific fields. Each query consists of terms, operators, and can include grouping and Boolean logic:
+
+            - **Field**: Specifies an application field such as `user` or `app`.
+            - **Operator**: Can be `eq` (equal to), `neq` (not equal to), `like` (pattern matching for strings), `gt` (greater than), `gte` (greater than or equal to), `lt` (less than), or `lte` (less than or equal to).
+            - **Value**: The value to match against the field, which can be a string or a numeric value. The *Value* **must be always enclosed in single quotes**, example '5.0', 'abcd', 'new'.
+            - **Format** : (<Field><space><Operator><space>'<Value>')
+
+            Queries can also be constructed with ranges like `timestamp from 1607990400 to 1610158997` (in Epoch Time). Boolean operators (`and`, `or`, `not`) can be used to combine multiple conditions. Parentheses can be used to specify the order of operations and group conditions.
+
+            Consider the below mentioned queryable fields which can be used to filter response:
+            - `user` : To filter based on User ID or email
+            - `app`: To filter based on name of the application
+          examples:
+            example1:
+              value: "query=user like 'sample.user@example.com'"
+            example2:
+              value: "query=user like 'sample.user2@example.com'"
+            example3:
+              value: "query=app like 'google.com' and user like 'sample.user@example.com'"
+          in: query
+          name: query
+          schema:
+            type: string
+        - description: 'Start time, in Unix timestamp, of the desired alerts'
+          in: query
+          name: starttime
+          schema:
+            type: integer
+        - description: 'End time, in Unix timestamp, of the desired alerts'
+          in: query
+          name: endtime
+          schema:
+            type: integer
+        - description: Query offset
+          in: query
+          name: offset
+          schema:
+            type: integer
+        - description: Number of results to limit the output by
+          in: query
+          name: limit
+          schema:
+            default: 10000
+            type: integer
+        - description: Number of results to limit the sub-aggregations by
+          in: query
+          name: sublimit
+          schema:
+            type: integer
+        - description: Fields to aggregate on
+          in: query
+          name: groupbys
+          schema:
+            items:
+              type: string
+            type: array
+        - description: Secondary fields to aggregate on
+          in: query
+          name: subgroupbys
+          schema:
+            items:
+              type: string
+            type: array
+        - description: Fields to sort the results by
+          in: query
+          name: orderbys
+          schema:
+            items:
+              type: string
+            type: array
+        - description: Names of the columns whose values want to be retrieved in results.
+          in: query
+          name: fields
+          schema:
+            type: string
+        - description: >-
+            {"access":{"users":["foo@bar.com"], "groups":["group@bar.com"],
+            "organization_unit_query": "{user eq foobar@bar.com"}}
+          in: query
+          name: access
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageEventResponse'
+          description: Successful Operation
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
+      summary: Get page events.
+      x-netskope-route-params:
+        enabledInProduction: true
+        rbac:
+          apiGroup:
+            - skope_it_page_events
+          access: r
+      tags:
+        - events
+    x-netskope-params:
+      serviceConfig: queryservice
+      version: 2
+
+  /api/v2/events/datasearch/network:
+    get:
+      description: >-
+        Get network events with the ability to filter the output based on
+        attribute parameters. <br><br> This endpoint is intended to be used
+        for ad-hoc query and allows users to get the network events in the
+        system by providing various parameters in the request. Users can use
+        this endpoint to filter and retrieve all and/or specific network
+        events based on criteria like hostname, device_id, time range and
+        other relevant metadata. <br><br>
+
+        For example, to filter network events to only show total count of
+        events for a specific duration:
+        `?starttime=1731535136&endtime=1736805536&fields=event_count:count(id)`
+        <br> You can also filter on multiple attributes by adding an `and`
+        logical operator and another attribute in the same format as the
+        previous example. For example, to show total network event count for
+        app equals DNS:
+        `?starttime=1731535136&endtime=1736805536&fields=event_count:count(id)&query=app
+        eq 'DNS'`<br><br>
+
+        Additional examples can be found here:
+        <https://docs.netskope.com/en/skope-it-query-language-search-examples/>
+        <br><br>
+
+        For SIEM ingestion, please consider using the `api/v2/dataexport`
+        endpoints which are explained here:
+        <https://docs.netskope.com/en/using-the-rest-api-v2-dataexport-iterator-endpoints/>
+      parameters:
+        - description: 'Query timeout, in seconds'
+          in: query
+          name: timeout
+          required: true
+          schema:
+            default: 180
+            type: integer
+        - description: |
+            This parameter allows for the use of a sophisticated query language to filter alerts based on various application-specific fields. Each query consists of terms, operators, and can include grouping and Boolean logic:
+
+            - **Field**: Specifies an application field such as `user` or `app`.
+            - **Operator**: Can be `eq` (equal to), `neq` (not equal to), `like` (pattern matching for strings), `gt` (greater than), `gte` (greater than or equal to), `lt` (less than), or `lte` (less than or equal to).
+            - **Value**: The value to match against the field, which can be a string or a numeric value. The *Value* **must be always enclosed in single quotes**, example '5.0', 'abcd', 'new'.
+            - **Format** : (<Field><space><Operator><space>'<Value>')
+
+            Queries can also be constructed with ranges like `timestamp from 1607990400 to 1610158997` (in Epoch Time). Boolean operators (`and`, `or`, `not`) can be used to combine multiple conditions. Parentheses can be used to specify the order of operations and group conditions.
+
+            Consider the below mentioned queryable fields which can be used to filter response:
+            - `user` : To filter based on User ID or email
+            - `app`: To filter based on name of the application
+          examples:
+            example1:
+              value: "query=user like 'sample.user@example.com'"
+            example2:
+              value: "query=user like 'sample.user2@example.com'"
+            example3:
+              value: "query=app like 'google.com' and user like 'sample.user@example.com'"
+          in: query
+          name: query
+          schema:
+            type: string
+        - description: 'Start time, in Unix timestamp, of the desired alerts'
+          in: query
+          name: starttime
+          schema:
+            type: integer
+        - description: 'End time, in Unix timestamp, of the desired alerts'
+          in: query
+          name: endtime
+          schema:
+            type: integer
+        - description: Query offset
+          in: query
+          name: offset
+          schema:
+            type: integer
+        - description: Number of results to limit the output by
+          in: query
+          name: limit
+          schema:
+            default: 10000
+            type: integer
+        - description: Number of results to limit the sub-aggregations by
+          in: query
+          name: sublimit
+          schema:
+            type: integer
+        - description: Fields to aggregate on
+          in: query
+          name: groupbys
+          schema:
+            items:
+              type: string
+            type: array
+        - description: Secondary fields to aggregate on
+          in: query
+          name: subgroupbys
+          schema:
+            items:
+              type: string
+            type: array
+        - description: Fields to sort the results by
+          in: query
+          name: orderbys
+          schema:
+            items:
+              type: string
+            type: array
+        - description: Names of the columns whose values want to be retrieved in results.
+          in: query
+          name: fields
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkEventResponse'
+          description: Successful Operation
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: Bad Request
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Many Requests
+      summary: Get network events.
+      x-netskope-route-params:
+        enabledInProduction: true
+        rbac:
+          apiGroup:
+            - skope_it_network_events
+          access: r
+      tags:
+        - events
+    x-netskope-params:
+      serviceConfig: queryservice
+      version: 2
+
   /api/v2/incidents/uba/getuci:
     post:
       summary: Get confidence index or UCI score for a user or multiple users
       description: |
-        get confidence index or UCI score for a user or multiple users.       
+        get confidence index or UCI score for a user or multiple users.
         #PromptExample: get confidence index for xyz@gmail.com
         #PromptExample: fetch UCI score for user.name
         #PromptExample: What is the UCI score for abc.efg@domain.com?
-        #PromptExample: WHat is the <user>'s confidence index? 
+        #PromptExample: WHat is the <user>'s confidence index?
       requestBody:
         content:
           application/json:
@@ -779,3 +1211,701 @@ components:
           type: integer
           format: int64
           description: alert close time in unix time in second
+    AppEventResponse:
+      properties:
+        result:
+          items:
+            type: object
+            properties:
+              access_method:
+                type: string
+                example: Add On
+              action:
+                type: string
+                example: alert
+              activity:
+                type: string
+                example: Send
+              alert:
+                type: string
+                example: 'yes'
+              alert_type:
+                type: string
+                example: DLP
+              app:
+                type: string
+                example: Microsoft Office 365 Exchange
+              app_session_id:
+                type: number
+                example: 8860832266851451000
+              appcategory:
+                type: string
+                example: Collaboration
+              bcc:
+                type: string
+                example: ser@gmail.local
+              browser:
+                type: string
+                example: Firefox
+              category:
+                type: string
+                example: Cloud Storage
+              cc:
+                type: string
+                example: user@gmail.local
+              cci:
+                type: string
+                example: 87
+              ccl:
+                type: string
+                example: unknown
+              connection_id:
+                type: number
+                example: 8860832266851451000
+              count:
+                type: number
+                example: 1
+              device:
+                type: string
+                example: Linux Device
+              dlp_file:
+                type: string
+                example: abc.png
+              dlp_incident_id:
+                type: number
+                example: 29912363887433216000
+              dlp_is_unique_count:
+                type: string
+                example: 'false'
+              dlp_parent_id:
+                type: number
+                example: 8784797540548759000
+              dlp_profile:
+                type: string
+                example: >-
+                  Auto_DLP_Preview_Img_Ocr_Adv_profilecustom_rule_advanced_testsIN9G
+              dlp_rule:
+                type: string
+                example: >-
+                  Auto_DLP_Preview_Img_Ocr_Adv_rulecustom_rule_advanced_tests4PX9
+              dlp_rule_count:
+                type: number
+                example: 2
+              dlp_rule_severity:
+                type: string
+                example: Low
+              dst_country:
+                type: string
+                example: US
+              dst_geoip_src:
+                type: number
+                example: 2
+              dst_latitude:
+                type: number
+                example: 0
+              dst_location:
+                type: string
+                example: Boardman
+              dst_longitude:
+                type: number
+                example: '-0.0.'
+              dst_region:
+                type: string
+                example: Virginia
+              dst_timezone:
+                type: string
+                example: America/New_York
+              dst_zipcode:
+                type: string
+                example: 0
+              dstip:
+                type: string
+                example: 10.0.0.0
+              file_lang:
+                type: string
+                example: Multiple
+              file_size:
+                type: number
+                example: 9565
+              file_type:
+                type: string
+                example: image/png
+              from_user:
+                type: string
+                example: test.user@abc.com
+              id:
+                type: number
+                example: 29
+              inline-email:
+                type: string
+                example: 'true'
+              inline-email-user:
+                type: string
+                example: test.user@abc.com
+              inline_email_from_user:
+                type: string
+                example: test.user@abc.com
+              instance:
+                type: string
+                example: gmail.com
+              instance_id:
+                type: string
+                example: 03304c14cea748acbf5b000ffdacd151
+              md5:
+                type: string
+                example: a30a9be7c7d6b337e1733dc4ade00000
+              netskope_pop:
+                type: string
+                example: AB-CD01
+              object:
+                type: string
+                example: /Users/Zip_with_20_Unique_Image.zip
+              object_type:
+                type: string
+                example: mail
+              org:
+                type: string
+                example: unknown
+              organization_unit:
+                type: string
+                example: abc.local/US
+              os:
+                type: string
+                example: Linux
+              other_categories:
+                type: array
+                items:
+                  type: object
+              parent_id:
+                type: string
+                example: 8602708965
+              policy:
+                type: string
+                example: policy
+              protection_string:
+                type: string
+                example: None
+              referer:
+                type: string
+                example: 'https://abce.box.com/files/0/f/8123408965'
+              request_id:
+                type: number
+                example: 79184768296473480000
+              scan_type:
+                type: string
+              severity:
+                type: string
+                example: unknown
+              sha256:
+                type: string
+                example: >-
+                  94a8b241cb46f9b1ff5ba246c991f893ec77c21524318f3a9576a786a3ac244d
+              site:
+                type: string
+                example: Microsoft Office 365 Exchange
+              smtp_to:
+                type: string
+                example: user@net.skope.com
+              src_country:
+                type: string
+                example: DE
+              src_geoip_src:
+                type: number
+                example: 2
+              src_latitude:
+                type: number
+                example: 0
+              src_location:
+                type: string
+                example: Main
+              src_longitude:
+                type: number
+                example: 0
+              src_region:
+                type: string
+                example: Hesse
+              src_zipcode:
+                type: string
+                example: 0
+              srcip:
+                type: string
+                example: 0.0.0.0
+              src_time:
+                type: string
+                example: n/a
+              src_timezone:
+                type: string
+                example: n/a
+              telemetry_app:
+                type: string
+              timestamp:
+                type: number
+                example: 1718665470
+              to_user:
+                type: string
+                example: user@net.skope.com
+              traffic_type:
+                type: string
+                example: CloudApp
+              true_obj_category:
+                type: string
+                example: Image
+              true_obj_type:
+                type: string
+                example: png
+              true_type_id:
+                type: number
+                example: 157
+              tss_license:
+                type: string
+                example: 'true'
+              tss_mode:
+                type: string
+                example: active
+              type:
+                type: string
+                example: nspolicy
+              ur_normalized:
+                type: string
+                example: user@netskope.com
+              url:
+                type: string
+                example: dl-web.dropbox.com/chunked_upload
+              user:
+                type: string
+                example: user@netskope.com
+              usergroup:
+                type: array
+                items:
+                  type: object
+              userip:
+                type: string
+                example: 10.0.0.0
+              userkey:
+                type: string
+                example: user@eabc.com
+          type: array
+        status:
+          properties:
+            count:
+              description: Number of results returned
+              type: integer
+              example: 1
+            execution:
+              description: Execution status
+              enum:
+                - Success
+                - Failed
+              type: string
+              example: SUCCESS
+            message:
+              type: string
+              example: Successfully executed
+            status_code:
+              description: HTTP status code
+              type: integer
+              example: 200
+          type: object
+      type: object
+    PageEventResponse:
+      properties:
+        result:
+          items:
+            type: object
+            properties:
+              access_method:
+                type: string
+                example: Client
+              app:
+                type: string
+                example: Google Calendar
+              app_session_id:
+                type: number
+                example: 9197168153600000000
+              app_tags:
+                type: array
+                items:
+                  type: string
+                example:
+                  - Enterprise
+              appcategory:
+                type: string
+                example: Collaboration
+              browser:
+                type: string
+                example: Edge
+              browser_session_id:
+                type: number
+                example: 5044920865376000000
+              browser_version:
+                type: string
+                example: 10.0.0.0
+              bypass_traffic:
+                type: string
+                example: 'no'
+              category:
+                type: string
+                example: Collaboration
+              cci:
+                type: number
+                example: 87
+              ccl:
+                type: string
+                example: high
+              client_bytes:
+                type: number
+                example: 176722
+              conn_duration:
+                type: number
+                example: 882
+              conn_endtime:
+                type: number
+                example: 1713658000
+              conn_starttime:
+                type: number
+                example: 1713600000
+              connection_id:
+                type: number
+                example: 7264575865694030000
+              count:
+                type: number
+                example: 1
+              device:
+                type: string
+                example: Windows Device
+              domain:
+                type: string
+                example: calendar.google.com
+              dst_country:
+                type: string
+                example: US
+              dst_latitude:
+                type: number
+                example: 0
+              dst_location:
+                type: string
+                example: View
+              dst_longitude:
+                type: number
+                example: 0
+              dst_region:
+                type: string
+                example: California
+              dst_timezone:
+                type: string
+                example: America/Los_Angeles
+              dst_zipcode:
+                type: string
+                example: N/A
+              dstip:
+                type: string
+                example: 10.0.0.0
+              dstport:
+                type: number
+                example: 443
+              hostname:
+                type: string
+                example: LTWCANESSA
+              http_transaction_count:
+                type: number
+                example: 43
+              netskope_pop:
+                type: string
+                example: AB-CD01
+              numbytes:
+                type: number
+                example: 208772
+              organization_unit:
+                type: string
+                example: foo.com/Users - Disabled
+              os:
+                type: string
+                example: Windows 10
+              os_family:
+                type: string
+                example: Windows
+              os_version:
+                type: string
+                example: Windows NT 10.0
+              other_categories:
+                type: array
+                items:
+                  type: string
+                example:
+                  - Collaboration
+              page:
+                type: string
+                example: calendar.google.com
+              protocol:
+                type: string
+                example: HTTP/1.1
+              req_cnt:
+                type: number
+                example: 43
+              resp_cnt:
+                type: number
+                example: 43
+              server_bytes:
+                type: number
+                example: 32050
+              severity:
+                type: string
+                example: unknown
+              site:
+                type: string
+                example: Google Calendar
+              src_country:
+                type: string
+                example: US
+              src_latitude:
+                type: number
+                example: 0
+              src_location:
+                type: string
+                example: Altos
+              src_longitude:
+                type: number
+                example: '-0.0.'
+              src_region:
+                type: string
+                example: California
+              src_time:
+                type: string
+                example: 'Sat Apr 20 16:53:08 2024'
+              src_timezone:
+                type: string
+                example: America/Los_Angeles
+              src_zipcode:
+                type: string
+                example: 0
+              srcip:
+                type: string
+                example: 10.0.0.0
+              timestamp:
+                type: number
+                example: 1713657000
+              traffic_type:
+                type: string
+                example: CloudApp
+              type:
+                type: string
+                example: connection
+              ur_normalized:
+                type: string
+                example: user@foo.com
+              url:
+                type: string
+                example: calendar.google.com
+              user:
+                type: string
+                example: user@foo.com
+              user_generated:
+                type: string
+                example: 'no'
+              useragent:
+                type: string
+                example: >-
+                  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+                  (KHTML, like Gecko) Chrome/10.0.0.0 Safari/537.36
+                  Edg/10.0.0.0
+              usergroup:
+                type: array
+                items:
+                  type: object
+              userip:
+                type: string
+                example: 10.0.0.0
+              userkey:
+                type: string
+                example: user@foo.com
+          type: array
+        status:
+          properties:
+            count:
+              description: Number of results returned
+              type: integer
+              example: 1
+            execution:
+              description: Execution status
+              enum:
+                - Success
+                - Failed
+              type: string
+              example: SUCCESS
+            message:
+              type: string
+              example: Successfully executed
+            status_code:
+              description: HTTP status code
+              type: integer
+              example: 200
+          type: object
+      type: object
+    NetworkEventResponse:
+      properties:
+        result:
+          items:
+            type: object
+            properties:
+              access_method:
+                type: string
+                example: GRE
+              action:
+                type: string
+                example: block
+              app:
+                type: string
+                example: DNS
+              appcategory:
+                type: string
+                example: n/a
+              category:
+                type: string
+                example: n/a
+              cci:
+                type: number
+                example: 0
+              ccl:
+                type: string
+                example: unknown
+              client_bytes:
+                type: number
+                example: 1234532
+              client_packets:
+                type: number
+                example: 234532
+              count:
+                type: number
+                example: 1
+              dst_geoip_src:
+                type: number
+                example: 2
+              dstip:
+                type: string
+                example: 10.0.0.0
+              dstport:
+                type: number
+                example: 53
+              end_time:
+                type: string
+                example: '2024-07-22T17:33:22.000Z'
+              flow_status:
+                type: string
+                example: close
+              ip_protocol:
+                type: string
+                example: UDP
+              netskope_pop:
+                type: string
+                example: AB-CD01
+              numbytes:
+                type: number
+                example: 92029303
+              organization_unit:
+                type: string
+                example: abc.local/US
+              policy:
+                type: string
+                example: default
+              pop_id:
+                type: string
+                example: 958482
+              publisher_name:
+                type: string
+                example: abc
+              server_bytes:
+                type: number
+                example: 92029303
+              server_packets:
+                type: number
+                example: 92029
+              session_duration:
+                type: number
+                example: 0
+              site:
+                type: string
+                example: dns
+              src_country:
+                type: string
+                example: US
+              src_geoip_src:
+                type: number
+                example: 2
+              src_latitude:
+                type: number
+                example: 0
+              src_location:
+                type: string
+                example: Newk
+              src_longitude:
+                type: number
+                example: '-0.0.'
+              src_region:
+                type: string
+                example: New York
+              src_zipcode:
+                type: string
+                example: 0
+              srcip:
+                type: string
+                example: 10.0.0.0
+              srcport:
+                type: number
+                example: 0
+              start_time:
+                type: string
+                example: '2024-07-22T17:33:22.000Z'
+              timestamp:
+                type: number
+                example: 1721669000
+              total_packets:
+                type: number
+                example: 100383
+              traffic_type:
+                type: string
+                example: non-web
+              tunnel_id:
+                type: string
+                example: 6
+              type:
+                type: string
+                example: network
+              ur_normalized:
+                type: string
+                example: 10.0.0.0
+              user:
+                type: string
+                example: 10.0.0.0
+              usergroup:
+                type: array
+                items:
+                  type: object
+              userip:
+                type: string
+                example: 10.0.0.0
+              userkey:
+                type: string
+                example: 10.0.0.0
+          type: array
+        status:
+          properties:
+            count:
+              description: Number of results returned
+              type: integer
+              example: 1
+            execution:
+              description: Execution status
+              enum:
+                - Success
+                - Failed
+              type: string
+              example: SUCCESS
+            message:
+              type: string
+              example: Successfully executed
+            status_code:
+              description: HTTP status code
+              type: integer
+              example: 200
+          type: object
+      type: object
