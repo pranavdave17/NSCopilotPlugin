@@ -1,0 +1,189 @@
+openapi: 3.0.1
+info:
+  description: Netskope API documentation
+  version: 1.0.0
+  title: Netskope API
+paths:
+  /api/v2/incidents/uba/getuci:
+    post:
+      summary: Get confidence index or UCI score for a user or multiple users
+      description: |
+        get confidence index or UCI score for a user or multiple users.
+        #PromptExample: get confidence index for xyz@gmail.com
+        #PromptExample: fetch UCI score for user.name
+        #PromptExample: What is the UCI score for abc.efg@domain.com?
+        #PromptExample: WHat is the <user>'s confidence index?
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                capPerUser:
+                  description: >-
+                    It is an optional parameter. The default value is 7. Be notice the
+                    parameter with the size of users will affects the performance of
+                    the API
+                  format: int32
+                  type: integer
+                  default: 1
+                fromTime:
+                  format: int64
+                  type: integer
+                  default: 0
+                users:
+                  description: a list of users. The length of the list should not bigger than 512
+                  items:
+                    type: string
+                  type: array
+              required:
+                - users
+                - fromTime
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ConfidenceTimeSeries"
+          description: successful request
+        '400':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+          description: invalid request
+      tags:
+      - incidents
+components:
+  schemas:
+    '200':
+      description: successful operation
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+    '400':
+      description: Bad request response
+      type: object
+      properties:
+        message:
+          type: string
+          example: Bad request
+    '401':
+      description: Bad request response
+      type: object
+      properties:
+        message:
+          type: string
+          example: Bad request
+    '403':
+      description: Bad request response
+      type: object
+      properties:
+        message:
+          type: string
+          example: Bad request
+    '404':
+      description: Bad request response
+      type: object
+      properties:
+        message:
+          type: string
+          example: Bad request
+    '405':
+      description: Method not allowed response
+      type: object
+      properties:
+        message:
+          type: string
+          example: Method not allowed
+    '408':
+      description: Timeout response
+      type: object
+      properties:
+        message:
+          type: string
+          example: Request timed out
+    '413':
+      description: Payload too large
+      type: object
+      properties:
+        message:
+          type: string
+          example: Payload too long
+    '414':
+      description: URI too long
+      type: object
+      properties:
+        message:
+          type: string
+          example: URI too long
+    '429':
+      description: Too many requests response
+      type: object
+      properties:
+        message:
+          type: string
+          example: Too many requests
+    BadRequest:
+      allOf:
+        - type: object
+          properties:
+            success:
+              type: boolean
+              default: false
+            msg:
+              type: string
+              default: Bad request error
+    ServerError:
+      allOf:
+        - type: object
+          properties:
+            success:
+              type: boolean
+              default: false
+            msg:
+              type: string
+              default: Backend error occurred
+    Unauthorized:
+      allOf:
+        - type: object
+          properties:
+            success:
+              type: boolean
+              default: false
+            msg:
+              type: string
+              default: Unauthorized
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: user facing message for this error
+    Confidence:
+      type: object
+      properties:
+        start:
+          type: integer
+          format: int64
+        confidenceScore:
+          type: integer
+          format: int32
+    ConfidenceTimeSeries:
+      type: object
+      properties:
+        userId:
+          type: string
+        confidences:
+          type: array
+          items:
+            $ref: '#/components/schemas/Confidence'
+    Status:
+      type: string
+      enum:
+        - Failed
+        - Passed
+        - Unknown
