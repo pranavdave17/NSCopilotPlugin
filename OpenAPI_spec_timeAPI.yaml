@@ -1,0 +1,62 @@
+openapi: 3.0.3
+info:
+  title: TimeAPI Timestamp API
+  description: Returns the current datetime.
+  version: 1.0.0
+servers:
+  - url: https://www.timeapi.io
+paths:
+  /api/time/current/zone/{timeZone}:
+    get:
+      summary: Get current date and time for given time zone
+      description: Returns the current timestamp for given time zone.
+      parameters:
+        - name: timeZone
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with current timestamp.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dateTime:
+                    type: string
+                    format: datetime
+                    description: Current timestamp.
+                  date:
+                    type: string
+                    format: date
+                    description: Current date.
+                  time:
+                    type: string
+                    format: time
+                    description: Current time.
+                  timeZone:
+                    type: string
+                    description: Time zone.
+                  dayOfWeek:
+                    type: string
+                    description: Day of the week.
+                  dstActive:
+                    type: boolean
+                    description: Daylight saving time active.
+                  year:
+                    type: integer
+                    format: int32
+                    description: Year.
+                  month:
+                    type: integer
+                    format: int32
+                    description: Month.
+                  day:
+                    type: integer
+                    format: int32
+                    description: Day.
+                required:
+                  - dateTime
+
