@@ -147,7 +147,8 @@ paths:
                 properties:
                   message:
                     type: string
-
+      tags:
+        - events
 
   /api/v2/events/datasearch/alert:
     x-netskope-params:
@@ -744,6 +745,7 @@ paths:
           description: invalid request
       tags:
       - incidents
+
 components:
   schemas:
     '200':
