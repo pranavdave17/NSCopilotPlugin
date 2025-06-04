@@ -694,58 +694,6 @@ paths:
       serviceConfig: queryservice
       version: 2
 
-  /api/v2/incidents/uba/getuci:
-    post:
-      summary: Get confidence index or UCI score for a user or multiple users
-      description: |
-        get confidence index or UCI score for a user or multiple users.
-        #PromptExample: get confidence index for xyz@gmail.com
-        #PromptExample: fetch UCI score for user.name
-        #PromptExample: What is the UCI score for abc.efg@domain.com?
-        #PromptExample: WHat is the <user>'s confidence index?
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                capPerUser:
-                  description: >-
-                    It is an optional parameter. The default value is 7. Be notice the
-                    parameter with the size of users will affects the performance of
-                    the API
-                  format: int32
-                  type: integer
-                  default: 1
-                fromTime:
-                  format: int64
-                  type: integer
-                  default: 0
-                users:
-                  description: a list of users. The length of the list should not bigger than 512
-                  items:
-                    type: string
-                  type: array
-              required:
-                - users
-                - fromTime
-        required: true
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ConfidenceTimeSeries"
-          description: successful request
-        '400':
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ErrorResponse"
-          description: invalid request
-      tags:
-      - incidents
-
 components:
   schemas:
     '200':
