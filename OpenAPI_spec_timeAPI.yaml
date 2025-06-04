@@ -1,21 +1,24 @@
-openapi: 3.0.3
+openapi: 3.0.1
 info:
-  title: TimeAPI Timestamp API
+  title: Time API
   description: Returns the current datetime.
   version: 1.0.0
+
 servers:
-  - url: https://www.timeapi.io
+  - url: https://www.timeapi.io/api
+
 paths:
-  /api/time/current/zone/{timeZone}:
+  /time/current/zone:
     get:
       summary: Get current date and time for given time zone
       description: Returns the current timestamp for given time zone.
       parameters:
         - name: timeZone
-          in: path
+          in: query
           required: true
           schema:
             type: string
+            default: UTC
       responses:
         '200':
           description: Successful response with current timestamp.
@@ -23,40 +26,36 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - dateTime
                 properties:
                   dateTime:
                     type: string
-                    format: datetime
-                    description: Current timestamp.
+                    description: Current timestamp
                   date:
                     type: string
-                    format: date
-                    description: Current date.
+                    description: Current date
                   time:
                     type: string
-                    format: time
-                    description: Current time.
+                    description: Current time
                   timeZone:
                     type: string
-                    description: Time zone.
+                    description: Time zone
                   dayOfWeek:
                     type: string
-                    description: Day of the week.
+                    description: Day of the week
                   dstActive:
                     type: boolean
-                    description: Daylight saving time active.
+                    description: Daylight saving time active
                   year:
                     type: integer
                     format: int32
-                    description: Year.
+                    description: Year
                   month:
                     type: integer
                     format: int32
-                    description: Month.
+                    description: Month
                   day:
                     type: integer
                     format: int32
-                    description: Day.
-                required:
-                  - dateTime
-
+                    description: Day
