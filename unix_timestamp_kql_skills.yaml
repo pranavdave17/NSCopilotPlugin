@@ -1,0 +1,23 @@
+Descriptor:
+  Name: CurrentUnixTimestampKQL
+  DisplayName: Current Unix Timestamp KQL Plugin
+  Description: Skills to generate current unix timestamp
+
+SkillGroups:
+  - Format: KQL
+    Skills:
+      - Name: GetLatestUnixTimestamp
+        DisplayName: Get Latest Unix Timestamp
+        Description: Generate current unix timestamp
+        Inputs:
+          - Name: time
+            Description: The input time
+            Required: true
+        Settings:
+          Target: Defender
+          Template: |-
+            let toUnixTime = (dt:datetime) 
+            { 
+                (dt - datetime(1970-01-01)) / 1s 
+            };
+            print result = toUnixTime(datetime({{time}}))

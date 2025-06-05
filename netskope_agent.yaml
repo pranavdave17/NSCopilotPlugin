@@ -1,0 +1,28 @@
+Descriptor:
+    Name: Netskope Agent
+    DisplayName: Netksope Agent
+    Description: Anlyze the user query and fetch netskope data and provide summary.
+
+SkillGroups:
+    - Format: Agent
+      Skills:
+        - Name: NetskopeAgent
+          DisplayName: Netskope Agent
+          Description: Extreact the duration from user query and calculate start and end datetime.
+          Inputs:
+            - Name: text
+              Description: User query containing query details.
+          Settings:
+            Instruciton: |-
+                1. Use `Get_time_current_zone` and get current UTC datetime in `%Y-%m-%dT%H:%M:%S` format
+                2. Refer this current UTC datetime and user query to calculate the start and end datetime in `%Y-%m-%dT%H:%M:%S` format. 
+                   If no duration provided in user query then use default duration to `1 day`.
+                3. Use skill `GetLatestUnixTimestamp` convert start and end datetime to unix format
+                4. Refer this start and end datetime in unix format, and Use skill `Get_api_v2_events_datasearch_alert` to fetch netskope data.
+
+                User Query:
+                {{text}}
+          ChildSkills:
+          - "Get_time_current_zone"
+          - "GetLatestUnixTimestamp"
+          - "Get_api_v2_events_datasearch_alert"

@@ -1,0 +1,30 @@
+Descriptor:
+  Name: Netskope Data Search
+  DisplayName: Netskope Reporting API endpoints
+  Description: |-
+    The API plugin offers 5 skills that range from displaying
+    - Netskope Alerts
+    - Netksope incidents
+    - Netskope Application
+    - Netskope page
+    - Netskope Network
+    - confidence index or UCI score
+    for Threat Hunting and Data Protection.
+  SupportedAuthTypes:
+    - ApiKey
+  Authorization:
+    Type: APIKey
+    Key: Netskope-api-token
+    Location: Header
+    AuthScheme: ''
+  Icon: https://go.netskope.com/rs/665-KFP-612/images/Netskope-Primary-Logo-Full-Color-RGB.svg
+
+SkillGroups:
+  - Format: API
+    Skills:
+      - Name: NetskopeDataSearch
+        DisplayName: Fetch Netskope Alert, Incident, Application, Page, Network, UCI Score
+        Description: The API plugin offers data search for Netskope.
+    Settings:
+      OpenApiSpecUrl: https://raw.githubusercontent.com/pranavdave17/NSCopilotPlugin/refs/heads/main/OpenAPI_spec.yaml
+      EndpointUrl: https://crest-support.de.goskope.com

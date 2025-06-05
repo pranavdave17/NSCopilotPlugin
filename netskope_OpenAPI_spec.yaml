@@ -20,7 +20,7 @@ paths:
         #ExamplePrompts Show me all the Netskope incidents for last 90 days.
         #ExamplePrompts Show me all the Netskope incidents from 2025/01/01 to 2025/01/07.
         #ExamplePrompts Show me the Netskope incidents from Monday Oct 23 UTC till today.
-      operationId: exportDlpIncidents
+      operationId: GetNetskopeDlpIncidents
       tags:
         - DLP Incident Export
       parameters:
@@ -147,8 +147,6 @@ paths:
                 properties:
                   message:
                     type: string
-      tags:
-        - events
 
   /api/v2/events/datasearch/alert:
     x-netskope-params:
@@ -170,6 +168,7 @@ paths:
         #ExamplePrompts Show me all Netskope Compromised Credential Alerts for the last 3 days.
         #ExamplePrompts Show me all Netskope Compromised Credential Alerts for last 24 hours.
         #ExamplePrompts Show me all Netskope Compromised Credential Alerts for last 24 hours with user exampleUser@netskope.com.
+      operationId: GetNetskopeAlerts
       parameters:
         - name: limit
           in: query
@@ -314,6 +313,7 @@ paths:
         Users can use this endpoint to filter and retrieve all and/or specific application events based on criteria like app, appcategory, time range and other relevant metadata.
         #ExamplePrompts show netskope application alerts for app equals Facebook from last 7 days.
         #ExamplePrompts show netskope application alerts for this month.
+      operationId: GetNetskopeApplicationEvents
       parameters:
         - description: 'Query timeout, in seconds'
           in: query
@@ -442,6 +442,7 @@ paths:
         metadata.
         #ExamplePrompts Show all page events for device equals Windows Device from last 7 days
         #ExamplePrompts get page events from 2025-05-21 to 2025-05-23
+      operationId: GetNetskopePageEvents
       parameters:
         - description: 'Query timeout, in seconds'
           in: query
@@ -578,6 +579,7 @@ paths:
 
         #ExamplePrompts show total network events for app equals DNS from last 3 days
         #ExamplePrompts Show network events from 2025/05/21 to 2025/05/23
+      operationId: GetNetskopeNetworkEvents
       parameters:
         - description: 'Query timeout, in seconds'
           in: query
@@ -693,6 +695,59 @@ paths:
     x-netskope-params:
       serviceConfig: queryservice
       version: 2
+
+  /api/v2/incidents/uba/getuci:
+    post:
+      summary: Get confidence index or UCI score for a user or multiple users
+      description: |
+        get confidence index or UCI score for a user or multiple users.
+        #PromptExample: get confidence index for xyz@gmail.com
+        #PromptExample: fetch UCI score for user.name
+        #PromptExample: What is the UCI score for abc.efg@domain.com?
+        #PromptExample: WHat is the <user>'s confidence index?
+      operationId: GetNetskopeUCIScore
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                capPerUser:
+                  description: >-
+                    It is an optional parameter. The default value is 7. Be notice the
+                    parameter with the size of users will affects the performance of
+                    the API
+                  format: int32
+                  type: integer
+                  default: 1
+                fromTime:
+                  format: int64
+                  type: integer
+                  default: 0
+                users:
+                  description: a list of users. The length of the list should not bigger than 512
+                  items:
+                    type: string
+                  type: array
+              required:
+                - users
+                - fromTime
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ConfidenceTimeSeries"
+          description: successful request
+        '400':
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorResponse"
+          description: invalid request
+      tags:
+      - incidents
 
 components:
   schemas:

@@ -1,0 +1,16 @@
+Descriptor:
+  Name: Get Current UTC timestamp
+  DisplayName: Get UTC Timestamp
+  Description: Use the Time API endpoint and get the current UTC timestamp.
+  SupportedAuthTypes:
+    - None 
+
+SkillGroups:
+  - Format: API
+    Skills:
+      - Name: GetUTCTimestamp
+        DisplayName: Provides current UTC time
+        Description: The API plugin offers current UTC timestamp.
+    Settings:
+      OpenApiSpecUrl: https://raw.githubusercontent.com/pranavdave17/NSCopilotPlugin/refs/heads/main/OpenAPI_spec_timeAPI.yaml
+      EndpointUrl: https://www.timeapi.io/api
