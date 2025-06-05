@@ -26,5 +26,5 @@ SkillGroups:
         DisplayName: Fetch Netskope Alert, Incident, Application, Page, Network, UCI Score
         Description: The API plugin offers data search for Netskope.
     Settings:
-      OpenApiSpecUrl: https://raw.githubusercontent.com/pranavdave17/NSCopilotPlugin/refs/heads/main/OpenAPI_spec.yaml
+      OpenApiSpecUrl: https://raw.githubusercontent.com/pranavdave17/NSCopilotPlugin/refs/heads/main/skills/OpenAPI_specs/netskope_OpenAPI_spec.yaml
       EndpointUrl: https://crest-support.de.goskope.com

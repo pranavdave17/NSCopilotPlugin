@@ -12,5 +12,5 @@ SkillGroups:
         DisplayName: Provides current UTC time
         Description: The API plugin offers current UTC timestamp.
     Settings:
-      OpenApiSpecUrl: https://raw.githubusercontent.com/pranavdave17/NSCopilotPlugin/refs/heads/main/OpenAPI_spec_timeAPI.yaml
+      OpenApiSpecUrl: https://raw.githubusercontent.com/pranavdave17/NSCopilotPlugin/refs/heads/main/skills/OpenAPI_specs/timeAPI_OpenAPI_spec.yaml
       EndpointUrl: https://www.timeapi.io/api
